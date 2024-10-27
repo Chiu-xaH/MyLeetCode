@@ -1,28 +1,7 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     struct ListNode *next;
- * };
- */
-
-
-struct ListNode* deleteNode(struct ListNode* head, int val){
-    struct ListNode* list = head;
-    struct ListNode* pre = NULL;
-    // 处理头节点为目标节点的情况
-    if (head != NULL && head->val == val) {
-        struct ListNode* temp = head;
-        head = head->next;
-        return head;
+int singleNumber(int* nums, int numsSize) {
+    int res = nums[0];
+    for(int i = 1;i < numsSize;i++) {
+        res ^= nums[i];
     }
-
-    while(list) {
-        if(list->val == val) {
-            pre->next = list->next;
-        }
-        pre = list;
-        list = list->next;
-    }
-    return head;
+    return res;
 }
