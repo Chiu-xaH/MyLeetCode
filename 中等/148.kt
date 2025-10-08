@@ -8,35 +8,47 @@
  * }
  */
 class Solution {
+    private fun merge(left: ListNode?, right: ListNode?) : ListNode? {
+        val dummy = ListNode(0)
+        var tail = dummy
+        var i = left
+        var j = right
+
+        while (i != null && j != null) {
+            if (i.`val` <= j.`val`) {
+                // 插i
+                tail.next = i
+                i = i.next
+            } else {
+                // 插j
+                tail.next = j
+                j = j.next
+            }
+            tail = tail.next!!
+        }
+        // 尾接剩余
+        tail.next = i ?: j
+        return dummy.next
+    }
+
     fun sortList(head: ListNode?): ListNode? {
-        if(head == null) {
-            return null
+        if (head?.next == null) {
+            return head
         }
-
-        val sortedValue = mutableListOf<Int>()
-        var linkList = head
-        while(linkList != null) {
-            sortedValue.add(linkList.`val`)
-            linkList = linkList.next
+        // 找中点
+        var slow: ListNode? = head
+        var fast: ListNode? = head.next
+        while (fast?.next != null) {
+            slow = slow?.next
+            fast = fast.next?.next
         }
+        // 断开
+        val mid = slow?.next
+        slow?.next = null
 
-        sortedValue.sort()
+        val sortedLeft = sortList(head)
+        val sortedRight = sortList(mid)
         
-        val listHead = ListNode(0)
-        var cur = listHead
-        for (v in sortedValue) {
-            cur.next = ListNode(v)
-            cur = cur.next
-        }
-        return listHead.next
+        return merge(sortedLeft, sortedRight)
     }
 }
-
-
-/*
-1 9 -1 5 3 4 0 2
-1 9 -1 5 | 3 4 0 2
-1 9 | -1 5 | 3 4 | 0 2
-
-
- */
